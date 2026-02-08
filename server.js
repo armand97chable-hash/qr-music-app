@@ -50,23 +50,28 @@ app.get("/activar/:code", (req, res) => {
   res.redirect(qrDB[code].spotifyUrl);
 });
 
-app.post("/guardar", (req, res) => {
-  const spotifyUrl = req.body.spotifyUrl;
+app.post("/guardar/:code", (req, res) => {
+  const { code } = req.params;
+  const { spotifyUrl } = req.body;
 
-  // Buscar el último código activado
-  const code = Object.keys(qrDB).find(
-    key => qrDB[key].activated === false
-  );
+  if (!qrDB[code]) {
+    return res.send("❌ Código no existe");
+  }
 
-  if (!code) {
-    return res.send("❌ No hay códigos disponibles");
+  if (qrDB[code].activated) {
+    return res.send("🔒 Este código ya fue activado");
   }
 
   qrDB[code].spotifyUrl = spotifyUrl;
   qrDB[code].activated = true;
 
-  res.redirect(spotifyUrl);
+  res.send(`
+    <h2>✅ Camiseta activada</h2>
+    <p>Este QR ya quedó vinculado para siempre 🎵</p>
+    <a href="/p/${code}">Probar QR</a>
+  `);
 });
+
 
 app.listen(PORT, () => {
   console.log(`🔥 Servidor corriendo en http://localhost:${PORT}`);
