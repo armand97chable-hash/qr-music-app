@@ -2,33 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>QR Music App</title>
+  <title>Activa tu QR</title>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
-
 <body>
-  <h1>👕🎵 QR Music App</h1>
-  <p>¿Qué canción quieres que viva en tu playera?</p>
 
+  <div class="card">
+    <h1>🎶 Activa tu QR</h1>
+    <p>Pega aquí el link de tu canción de Spotify</p>
 
-<form method="post">
+    <form method="POST">
+      <input
+        type="url"
+        name="song_url"
+        placeholder="https://open.spotify.com/..."
+        required
+      />
+      <button type="submit">Guardar canción</button>
+    </form>
+  </div>
 
-    <input
-      type="text"
-      name="spotifyUrl"
-      placeholder="Pega aquí el link de Spotify"
-      required
-      style="width:300px"
-    />
-    <br><br>
-    <button type="submit">Guardar canción 🔒</button>
-  </form>
-<script>
-  const form = document.querySelector("form");
-  const path = window.location.pathname;
-
-  if (path.startsWith("/activar/")) {
-    form.action = "/guardar/" + path.split("/activar/")[1];
-  }
-</script>
 </body>
 </html>
