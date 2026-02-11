@@ -196,7 +196,7 @@ app.get("/admin/generar", (req, res) => {
         return res.send("❌ Error al crear QR");
       }
 
-      const link = `http://localhost:3000/activar/${codigo}`;
+      const link = `https://qr-music-app-armando.onrender.com/${codigo}`;
 
       res.send(`
         <h1>✅ QR generado</h1>
