@@ -31,7 +31,6 @@ app.get("/admin/generar", (req, res) => {
   );
 });
 
-
 app.get("/qr/:code", (req, res) => {
   const { code } = req.params;
 
@@ -49,10 +48,12 @@ app.get("/qr/:code", (req, res) => {
         return res.sendFile(path.join(__dirname, "public/index.html"));
       }
 
-      return res.sendFile(path.join(__dirname, "public/used.html"));
+      
+      return res.redirect(row.spotifyUrl);
     }
   );
 });
+
 
 
 app.post("/qr/:code", (req, res) => {
