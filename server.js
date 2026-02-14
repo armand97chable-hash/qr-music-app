@@ -67,6 +67,35 @@ app.get("/qr/:code", (req, res) => {
   );
 });
 
+app.get("/admin/generar-lote/:cantidad", (req, res) => {
+  const cantidad = parseInt(req.params.cantidad);
+  const codigos = [];
+
+  function generarCodigo(longitud = 6) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let codigo = "";
+    for (let i = 0; i < longitud; i++) {
+      codigo += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return codigo;
+  }
+
+  let creados = 0;
+
+  for (let i = 0; i < cantidad; i++) {
+    const codigo = generarCodigo();
+    codigos.push(codigo);
+
+    db.run("INSERT INTO qr_codes (code, activated) VALUES (?, 0)", [codigo]);
+    creados++;
+  }
+
+  res.send(`
+    <h1>✅ Lote generado</h1>
+    <p>${creados} códigos creados</p>
+    <pre>${codigos.join("\n")}</pre>
+  `);
+});
 
 
 app.post("/qr/:code", (req, res) => {
