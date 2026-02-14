@@ -31,6 +31,19 @@ app.get("/admin/generar", (req, res) => {
   );
 });
 
+app.get("/admin/crear-universal", (req, res) => {
+  db.run(
+    "INSERT INTO qr_codes (code, activated) VALUES ('universal', 0)",
+    function (err) {
+      if (err) {
+        return res.send("Ya existe el QR universal");
+      }
+      res.send("QR universal creado correctamente");
+    }
+  );
+});
+
+
 app.get("/qr/:code", (req, res) => {
   const { code } = req.params;
 
