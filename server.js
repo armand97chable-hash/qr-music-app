@@ -40,20 +40,19 @@ app.post("/qr/:id", (req, res) => {
   const spotifyUrl = req.body.song_url;
 
   db.run(
-  `
-  INSERT INTO qr_codes (code, spotifyUrl, activated)
-  VALUES (?, ?, 1)
-  `,
-    [qrCode, spotifyUrl],
-    (err) => {
+    "UPDATE qr_codes SET spotifyUrl = ?, activated = 1 WHERE code = ?",
+    [spotifyUrl, qrCode],
+    function (err) {
       if (err) {
-        return res.sendFile(path.join(__dirname, "public/used.html"));
+        console.error(err);
+        return res.status(500).send("Error al activar QR");
       }
 
-      res.sendFile(path.join(__dirname, "public/success.html"));
+      return res.sendFile(path.join(__dirname, "public/success.html"));
     }
   );
 });
+
 
 
 
